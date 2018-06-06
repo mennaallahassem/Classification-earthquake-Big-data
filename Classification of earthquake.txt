@@ -1,0 +1,89 @@
+bigdata<-read.table("C:\\Users\\Poula\\Desktop\\NewBigData.csv",na.strings=" ",sep=",",header=TRUE)
+> View(bigdata)
+
+[=-0x$depth[is.na(x$depth)]<- 33
+ x$depth[x$depth>1000]<- 33
+
+ x$latitude[x$latitude>90]<- 41.81 
+ x$latitude[x$latitude<(-90)]<- 41.81
+ x$latitude[is.na(x$latitude)]<- 41.81
+ x$longitude[x$longitude>180]<- (-116.2)
+ x$longitude[x$longitude<(-180)]<- (-116.2)
+ x$longitude[is.na(x$longitude)]<- (-116.2)
+ x$mag[x$mag>10]<-1.598
+x$mag[x$mag<(-1)]<-1.598
+ x$mag[is.na(x$mag)]<- 1.598
+
+//////////////////////////////
+boxplot(bigdata$horizontalError,col=rainbow(6),ylab="frequency")
+ plot(bigdata$HorizontalError)
+ boxplot(bigdata$magSource)
+dotchart(bigdata$mag,groups=bigdata$magSource,labels=row.names(bigdata),cex=0.7,main="magntiude and mag source",xlab="magntiude")
+
+plot(bigdata$mag,bigdata$magSource)
+plot(bigdata$mag,bigdata$magNst)
+ plot(bigdata$depth,bigdata$depthError)
+plot(bigdata$mag,bigdata$magError)
+ plot(density(bigdata$net))
+hist(bigdata$rms,xlim=c(0.1300,1.3900),xlab="Root Mean square")
+plot(bigdata$gap,bigdata$depth)
+  barplot(bigdata$depth,bigdata$dmin,xlim=c(0.4000,7.0880),ylim=c(-3.44,673.70),xlab="dim",ylab="depth")
+ boxplot(bigdata$depth,bigdata$dmin,xlim=c(0.4000,7.0880),ylim=c(-3.44,673.70),xlab="dim",ylab="depth")
+ barplot(bigdata$depth,bigdata$dmin,xlim=c(0.4000,3),ylim=c(-3.44,673.70),xlab="dim",ylab="depth")
+ barplot(bigdata$depth,bigdata$dmin,xlim=c(0.4000,7.0880),ylim=c(-3.44,673.70),xlab="dim",ylab="depth")
+hist(bigdata$nst,xlim=c(0,192),xlab="Nst",ylab="frequency")
+dotchart(bigdata$mag,groups=bigdata$magType,labels=row.names(bigdata$magType),cex=0.7,main="magntiude and mag type",xlab="magntiude")
+
+ dotchart(bigdata$mag,groups=bigdata$magType,labels=row.names(bigdata),cex=0.7,main="magntiude and mag type",xlab="magntiude")
+dotchart(bigdata$mag,groups=bigdata$magType,labels=row.names(bigdata$magType),cex=0.7,main="magntiude and mag type",xlab="magntiude")
+ plot(bigdata$mag,bigdata$magType)
+ plot(density(bigdata$magType))
+ plot(density(bigdata$mag))
+ plot(density(bigdata$mag,bigdata$magType))
+ barplot(bigdata$mag,bigdata$magType,col=rainbow(5),beside=T)
+hist(bigdata$mag,bigdata$magType,xlab="magnitude",ylab="magntiudeType")
+plot(bigdata$depth,bigdata$mag,xlim=c(-3.44,673.70),ylim=c(-0.900,6.800),xlab="depth",ylab="magintude",breaks=seq(-3.44,670,by=100))
+
+ plot(bigdata$depth,bigdata$mag,xlim=c(-3.44,673.70),ylim=c(-0.900,6.800),xlab="depth",ylab="magintude")
+ barplot(bigdata$depth,bigdata$mag,xlim=c(-3.44,673.70),ylim=c(-0.900,6.800),xlab="depth",ylab="magintude",seq=c(-3.44,673.70,by=100))
+ barplot(bigdata$depth,bigdata$mag,xlim=c(-3.44,673.70),ylim=c(-0.900,6.800),xlab="depth",ylab="magintude")
+ barplot(x$depth,x$mag,xlim=c(-3.44,673.70),ylim=c(-0.900,6.800),xlab="depth",ylab="magintude")
+barplot(x$depth,x$mag,xlab="depth",ylab="magintude")
+boxplot(x$depth,col=rainbow(6),ylab="frequency")
+boxplot(x$longitude,col=rainbow(6),ylab="frequency")
+boxplot(x$longlatitude,col=rainbow(6),ylab="frequency")
+ boxplot(x$latitude,col=rainbow(6),ylab="frequency")
+hist(x$longitude,col="lightblue",xlab="longtiude",main="longtiude")
+plot(sort(x$longitude))
+plot(x$latitude,x$longitude)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+y_train <- bigdata$status
+x_train <- bigdata$type
+ fit <- rpart(y_train ~ ., data = bigdata,method="class")
+
+ x_train <- bigdata[,-21]
+y_train <- setTrain$status
+ x_train <- setTrain[,-21]
+fit <- rpart(y_train ~ ., data = setTrain,method="class")
+ summary(fit)
+ x_test<-setTest[,-21]
+ predicted = predict(fit,x_test)
+ summary(predicted)
+
+-----------------------------------------------------------------------------------------------------------
+library(party)
+ind<-sample(2,nrow(bigdata),prob=c(0.5,0.5),replace=TRUE)
+train.data<-bigdata[ind==1,]
+test.data<-bigdata[ind==2,]
+bigdata.tree<-ctree(status~depth+mag+lattiude+longitude,data=train.data)
+table(predict(bigdata.tree),train.data$status)
+set.seed(888)
+testPred<-predict(bigdata.tree,newdata=test.data)
+table(testPred,test.data$status)
+testPred
+plot(bigdata.tree,type="simple")
+
+
